@@ -51,7 +51,8 @@ StateListenerRegistry.register(
                     const { etherpad_base: etherpadBase } = getState()['features/base/config'];
 
                     if (etherpadBase) {
-                        const u = new URL(value, etherpadBase);
+                        const currentUrl = new URL(window.location.href);
+                        const u = new URL(value, currentUrl.origin + etherpadBase);
 
                         url = u.toString();
                     }

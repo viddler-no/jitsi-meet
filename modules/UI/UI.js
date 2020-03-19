@@ -236,7 +236,8 @@ UI.initEtherpad = name => {
 
     etherpadManager = new EtherpadManager(eventEmitter);
 
-    const url = new URL(name, config.etherpad_base);
+    const currentUrl = new URL(window.location.href);
+    const url = new URL(name, currentUrl.origin + config.etherpad_base);
 
     APP.store.dispatch(setDocumentUrl(url.toString()));
 };

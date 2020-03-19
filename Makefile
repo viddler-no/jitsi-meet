@@ -1,6 +1,7 @@
 BUILD_DIR = build
 CLEANCSS = ./node_modules/.bin/cleancss
-DEPLOY_DIR = libs
+DEPLOY_ROOT = ../server/base/web/meet
+DEPLOY_DIR = $(DEPLOY_ROOT)/libs
 LIBJITSIMEET_DIR = node_modules/lib-jitsi-meet/
 LIBFLAC_DIR = node_modules/libflacjs/dist/min/
 RNNOISE_WASM_DIR = node_modules/rnnoise-wasm/dist/
@@ -21,10 +22,10 @@ compile:
 clean:
 	rm -fr $(BUILD_DIR)
 
-deploy: deploy-init deploy-appbundle deploy-rnnoise-binary deploy-lib-jitsi-meet deploy-libflac deploy-css deploy-local
+deploy: deploy-init deploy-static deploy-appbundle deploy-rnnoise-binary deploy-lib-jitsi-meet deploy-libflac deploy-css deploy-local
 
 deploy-init:
-	rm -fr $(DEPLOY_DIR)
+	rm -fr $(DEPLOY_ROOT)
 	mkdir -p $(DEPLOY_DIR)
 
 deploy-appbundle:
@@ -51,6 +52,28 @@ deploy-appbundle:
 		$(BUILD_DIR)/rnnoise-processor.min.js \
 		$(BUILD_DIR)/rnnoise-processor.min.map \
 		$(DEPLOY_DIR)
+
+deploy-static:
+	cp -r \
+		static/ \
+		sounds/ \
+		fonts/ \
+		images/ \
+		lang/ \
+		connection_optimization/ \
+		$(DEPLOY_ROOT) \
+	&& cp \
+		index.html \
+		base.html \
+		body.html \
+		head.html \
+		plugin.head.html \
+		title.html \
+		logging_config.js \
+		$(DEPLOY_ROOT) \
+	&& mkdir -p $(DEPLOY_ROOT)/css && cp \
+		css/all.css \
+		$(DEPLOY_ROOT)/css/all.css
 
 deploy-lib-jitsi-meet:
 	cp \
